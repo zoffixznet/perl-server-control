@@ -5,6 +5,7 @@ use File::Temp qw(tempfile tempdir);
 use Guard;
 use HTTP::Server::Simple;
 use Log::Any;
+use Class::Load;
 use Net::Server;
 use POSIX qw(geteuid getegid);
 use Server::Control::Util
@@ -111,7 +112,7 @@ sub test_stopstart : Tests(16) {
 
     # Make sure stopstart aborts when stop fails
     my $orig_class  = ref($ctl);
-    my $unstoppable = Class::MOP::Class->create_anon_class(
+    my $unstoppable = Class::Load::Class->create_anon_class(
         superclasses => [$orig_class],
         methods      => {
             do_stop => sub { die "can't stop!" }

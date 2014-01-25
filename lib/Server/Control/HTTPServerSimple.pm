@@ -4,6 +4,7 @@ use Moose;
 use MooseX::StrictConstructor;
 use Moose::Meta::Class;
 use Moose::Util::TypeConstraints;
+use Class::Load;
 use strict;
 use warnings;
 
@@ -39,7 +40,7 @@ sub _build_server {
     my $self = shift;
 
     my $server_class = $self->server_class;
-    Class::MOP::load_class($server_class);
+    Class::Load::load_class($server_class);
     unless ( $server_class->can('net_server')
         && defined( $server_class->net_server() ) )
     {
